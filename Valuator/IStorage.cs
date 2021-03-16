@@ -6,6 +6,7 @@ namespace Valuator
     {
         void Store(string key, string value);
         string Load(string key);
-        List<string> GetKeys();
+        IEnumerable<string> GetKeys();
+        bool DoesKeyExist(string key);
     }
 }

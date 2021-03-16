@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using StackExchange.Redis;
 using System;
 
@@ -7,50 +8,34 @@ namespace Valuator
 {
     public class RedisStorage : IStorage
     {
-        private readonly ILogger<RedisStorage> _logger;
         private readonly IConnectionMultiplexer _connectionMultiplexer;
-        private readonly string host = "localhost";
-        private readonly int port = 6379;
 
-        public RedisStorage(ILogger<RedisStorage> logger)
+        public RedisStorage()
         {
-            _logger = logger;
-            _connectionMultiplexer = ConnectionMultiplexer.Connect(host);
+            _connectionMultiplexer = ConnectionMultiplexer.Connect(Constants.Host);
         }
 
         public void Store(string key, string value)
         {
-            IDatabase db = _connectionMultiplexer.GetDatabase();
-            if (!db.StringSet(key, value))
-            {
-                _logger.LogWarning("Failed to save", key, ": ",value);
-            }
+            var db = _connectionMultiplexer.GetDatabase();
+            db.StringSet(key, value);
         }
 
         public string Load(string key)
         {
-            IDatabase db = _connectionMultiplexer.GetDatabase();
-            if (db.KeyExists(key))
-            {
-                return db.StringGet(key);
-            }
-            _logger.LogWarning("Key ", key, " doesn't exist");
-            return string.Empty;
+            var db = _connectionMultiplexer.GetDatabase();
+            return db.StringGet(key);
         }
 
-        public List<string> GetKeys()
+        public IEnumerable<string> GetKeys()
         {
-            List<string> data = new List<string>();
-
-            var keys = _connectionMultiplexer.GetServer(host, port).Keys();
-
-            foreach (var item in keys)
-            {
-                data.Add(item.ToString());
-                Console.WriteLine(item.ToString());
-            }
-
-            return data;
+            var keys = _connectionMultiplexer.GetServer(Constants.Host, Constants.Port).Keys();
+            return _connectionMultiplexer.GetServer(Constants.Host, Constants.Port).Keys().Select(x => x.ToString()).ToList();
+        }
+        public bool DoesKeyExist(string key)
+        {
+            var db = _connectionMultiplexer.GetDatabase();
+            return db.KeyExists(key);
         }
     }
 }

@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Sancene\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Sancene\\.nuget\\packages"
+    ]
+  }
+}
