@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using NATS.Client;
-using Valuator;
+using SharedLib;
 
 namespace RankCalculator
 {

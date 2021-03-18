@@ -1,4 +1,4 @@
-﻿namespace Valuator
+﻿namespace SharedLib
 {
     public static class Constants
     {

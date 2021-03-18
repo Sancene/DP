@@ -1636,11 +1636,25 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
+      "SharedLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "StackExchange.Redis": "2.2.4"
+        },
+        "compile": {
+          "bin/placeholder/SharedLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SharedLib.dll": {}
+        }
+      },
       "Valuator/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "NATS.Client": "0.12.0",
+          "SharedLib": "1.0.0",
           "StackExchange.Redis": "2.2.4"
         },
         "compile": {
@@ -5784,6 +5798,11 @@
         "system.xml.xdocument.nuspec"
       ]
     },
+    "SharedLib/1.0.0": {
+      "type": "project",
+      "path": "../SharedLib/SharedLib.csproj",
+      "msbuildProject": "../SharedLib/SharedLib.csproj"
+    },
     "Valuator/1.0.0": {
       "type": "project",
       "path": "../Valuator/Valuator.csproj",
@@ -5794,6 +5813,7 @@
     "net5.0": [
       "Microsoft.Extensions.Logging >= 5.0.0",
       "NATS.Client >= 0.12.0",
+      "SharedLib >= 1.0.0",
       "StackExchange.Redis >= 2.2.4",
       "Valuator >= 1.0.0"
     ]
@@ -5825,6 +5845,9 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
+            "D:\\Sancene\\6semestr\\dp\\DP\\SharedLib\\SharedLib.csproj": {
+              "projectPath": "D:\\Sancene\\6semestr\\dp\\DP\\SharedLib\\SharedLib.csproj"
+            },
             "D:\\Sancene\\6semestr\\dp\\DP\\Valuator\\Valuator.csproj": {
               "projectPath": "D:\\Sancene\\6semestr\\dp\\DP\\Valuator\\Valuator.csproj"
             }
