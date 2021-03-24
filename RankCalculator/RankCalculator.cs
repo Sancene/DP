@@ -19,7 +19,7 @@ namespace RankCalculator
         {
             _logger = logger;
             _connection = NatsFactory.GetNatsConnection();
-            _subscription = _connection.SubscribeAsync(Constants.RankKey, (_, args) =>
+            _subscription = _connection.SubscribeAsync(Constants.RankKey, "rank", (_, args) =>
             {
                 var id = Encoding.UTF8.GetString(args.Message.Data);
                 var textKey = Constants.TextKeyPrefix + id;
