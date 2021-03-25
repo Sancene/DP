@@ -6,10 +6,12 @@ namespace SharedLib
     public class RedisStorage : IStorage
     {
         private readonly IConnectionMultiplexer _connectionMultiplexer;
+        private readonly string _hostName;
 
         public RedisStorage()
         {
-            _connectionMultiplexer = ConnectionMultiplexer.Connect(Constants.Host);
+            _hostName = Constants.HostName;
+            _connectionMultiplexer = ConnectionMultiplexer.Connect(_hostName);
         }
 
         public void Store(string key, string value)
@@ -26,8 +28,7 @@ namespace SharedLib
 
         public IEnumerable<string> GetKeys()
         {
-            var keys = _connectionMultiplexer.GetServer(Constants.Host, Constants.Port).Keys();
-            return _connectionMultiplexer.GetServer(Constants.Host, Constants.Port).Keys().Select(x => x.ToString()).ToList();
+            return _connectionMultiplexer.GetServer(_hostName, Constants.Port).Keys().Select(x => x.ToString());
         }
         public bool DoesKeyExist(string key)
         {

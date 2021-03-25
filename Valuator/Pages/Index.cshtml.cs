@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SharedLib;
+using System.Text.Json;
 
 namespace Valuator.Pages
 {
@@ -30,14 +31,19 @@ namespace Valuator.Pages
 
             string id = Guid.NewGuid().ToString();
 
-            _storage.Store(Constants.SimilarityKeyPrefix + id, GetSimilarity(text).ToString());
+            var similarity = GetSimilarity(text);
+            _storage.Store(Constants.SimilarityKeyPrefix + id, similarity.ToString());
+
+            _messageBroker.Publish(Constants.SimilarityKeyCalculated,
+                JsonSerializer.Serialize(new SimilarityMessage { Id = id, Similarity = similarity }));
 
             _storage.Store(Constants.TextKeyPrefix + id, text);
 
-            _messageBroker.Publish(Constants.RankKeyPrefix, id);
+            _messageBroker.Publish(Constants.RankKey, id);
 
             return Redirect($"summary?id={id}");
         }
+
 
         private int GetSimilarity(string text)
         {

@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using SharedLib;
 
-namespace RankCalculator
+namespace EventsLogger
 {
-    internal static class Program
+    public static class Program
     {
         private static async Task Main()
         {
@@ -14,8 +13,8 @@ namespace RankCalculator
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
 
-            var calculator = new RankCalculator(loggerFactory.CreateLogger<RankCalculator>(), new RedisStorage());
-            calculator.Subscribe();
+            using var eventLogger = new EventsLogger(loggerFactory.CreateLogger<EventsLogger>());
+            eventLogger.Subscribe();
             await Task.Delay(-1);
         }
     }
