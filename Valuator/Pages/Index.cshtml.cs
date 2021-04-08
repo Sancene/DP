@@ -20,7 +20,7 @@ namespace Valuator.Pages
             _messageBroker = messageBroker;
         }
 
-        public IActionResult OnPost(string text)
+        public IActionResult OnPost(string text, string country)
         {
             if (string.IsNullOrEmpty(text))
             {
@@ -30,14 +30,16 @@ namespace Valuator.Pages
             _logger.LogDebug(text);
 
             string id = Guid.NewGuid().ToString();
+            _logger.LogInformation(country + " " + id);
 
             var similarity = GetSimilarity(text);
-            _storage.Store(Constants.SimilarityKeyPrefix + id, similarity.ToString());
+            _storage.StoreShard(id, country);
+            _storage.Store(country, Constants.SimilarityKeyPrefix + id, similarity.ToString());
 
             _messageBroker.Publish(Constants.SimilarityKeyCalculated,
                 JsonSerializer.Serialize(new SimilarityMessage { Id = id, Similarity = similarity }));
 
-            _storage.Store(Constants.TextKeyPrefix + id, text);
+            _storage.Store(country, Constants.TextKeyPrefix + id, text);
 
             _messageBroker.Publish(Constants.RankKey, id);
 
@@ -47,17 +49,7 @@ namespace Valuator.Pages
 
         private int GetSimilarity(string text)
         {
-            var keys = _storage.GetKeys();
-
-            foreach (string key in keys)
-            {
-                if (key.Substring(0, 5) == Constants.TextKeyPrefix && _storage.Load(key) == text)
-                {
-                    return 1;
-                }
-            }
-
-            return 0;
+            return _storage.DoesSimilarTextExist(text) ? 1 : 0;
         }
     }
 }

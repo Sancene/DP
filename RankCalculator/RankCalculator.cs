@@ -22,12 +22,12 @@ namespace RankCalculator
             _subscription = _connection.SubscribeAsync(Constants.RankKey, "rank", (_, args) =>
             {
                 var id = Encoding.UTF8.GetString(args.Message.Data);
-                var textKey = Constants.TextKeyPrefix + id;
-                if (!storage.DoesKeyExist(textKey)) return;
+                var shard = storage.LoadShard(id);
 
-                var text = storage.Load(textKey);
+                var text = storage.Load(shard, Constants.TextKeyPrefix + id);
                 var rank = GetRank(text);
-                storage.Store(Constants.RankKeyPrefix + id, rank.ToString(CultureInfo.InvariantCulture));
+                _logger.LogInformation("Shard: " + shard + ", id: " + id + ", text: " + text + ", rank: " + rank);
+                storage.Store(shard, Constants.RankKeyPrefix + id, rank.ToString(CultureInfo.InvariantCulture));
 
                 var rankData = new RankMessage { Id = id, Rank = rank };
                 _connection.Publish(Constants.RankKeyCalculated,

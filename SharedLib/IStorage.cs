@@ -4,9 +4,10 @@ namespace SharedLib
 {
     public interface IStorage
     {
-        void Store(string key, string value);
-        string Load(string key);
-        IEnumerable<string> GetKeys();
-        bool DoesKeyExist(string key);
+        void Store(string shard, string key, string value);
+        void StoreShard(string key, string shard);
+        string Load(string shard, string key);
+        string LoadShard(string key);
+        bool DoesSimilarTextExist(string text);
     }
 }
