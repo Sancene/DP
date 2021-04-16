@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 using StackExchange.Redis;
+
 namespace SharedLib
 {
     public class RedisStorage : IStorage
@@ -17,15 +19,15 @@ namespace SharedLib
             {
                 {
                     Constants.ShardIdRus,
-                    ConnectionMultiplexer.Connect(Constants.HostName + ":6000")
+                    ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_RUS", EnvironmentVariableTarget.User))
                 },
                 {
                     Constants.ShardIdEu,
-                    ConnectionMultiplexer.Connect(Constants.HostName + ":6001")
+                    ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_EU", EnvironmentVariableTarget.User))
                 },
                 {
                     Constants.ShardIdOther,
-                    ConnectionMultiplexer.Connect(Constants.HostName + ":6002")
+                    ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_OTHER", EnvironmentVariableTarget.User))
                 }
             };
         }
@@ -53,6 +55,7 @@ namespace SharedLib
         {
             return _connectionMultiplexer.GetDatabase().StringGet(key);
         }
+
         public bool DoesSimilarTextExist(string text)
         {
             return _connections.Any(x => x.Value.GetDatabase().SetContains(Constants.TextKeyPrefix, text));
