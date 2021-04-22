@@ -47,9 +47,6 @@ namespace Server
 
             Interactions.CheckArgumentsCount(args, 1);
             StartListening(int.Parse(args[0]));
-
-            Console.WriteLine("\nНажмите ENTER чтобы выйти...");
-            Console.Read();
         }
     }
 }
