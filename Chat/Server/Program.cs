@@ -43,8 +43,6 @@ namespace Server
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("Запуск сервера...");
-
             Interactions.CheckArgumentsCount(args, 1);
             StartListening(int.Parse(args[0]));
         }
