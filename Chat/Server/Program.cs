@@ -28,7 +28,7 @@ namespace Server
                     var handler = listener.Accept();
                     var data = Interactions.ReceiveMsg(handler);
                     history.Add(data);
-                    Console.WriteLine($"Message received: {data}");
+                    Console.WriteLine("Message received: {0}", data);
                     var jsonMsg = JsonSerializer.Serialize(history);
                     Interactions.SendMsg(handler, jsonMsg);
                     handler.Shutdown(SocketShutdown.Both);
