@@ -43,7 +43,7 @@ namespace Server
 
         private static void Main(string[] args)
         {
-            Interactions.CheckArgumentsCount(args, 1);
+            Interactions.CheckArgumentCount(args, 1);
             StartListening(int.Parse(args[0]));
         }
     }

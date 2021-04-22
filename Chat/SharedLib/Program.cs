@@ -9,9 +9,9 @@ namespace SharedLibrary
     {
         public static string ReceiveMsg(Socket socket)
         {
-            var lenBuf = new byte[sizeof(int)];
-            socket.Receive(lenBuf);
-            var buf = new byte[BitConverter.ToInt32(lenBuf)];
+            var bufLen = new byte[sizeof(int)];
+            socket.Receive(bufLen);
+            var buf = new byte[BitConverter.ToInt32(bufLen)];
             var data = Encoding.UTF8.GetString(buf, 0, socket.Receive(buf));
 
             return data;
@@ -23,9 +23,9 @@ namespace SharedLibrary
             socket.Send(BitConverter.GetBytes(data.Length).Concat(data).ToArray());
         }
 
-        public static void CheckArgumentsCount(string[] args, short expectedArgumentsCount)
+        public static void CheckArgumentCount(string[] args, short expectedArgumentCount)
         {
-            if (args.Length != expectedArgumentsCount) throw new Exception("Invalid argument count");
+            if (args.Length != expectedArgumentCount) throw new Exception("Invalid argument count");
         }
     }
 }

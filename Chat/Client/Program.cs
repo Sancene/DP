@@ -53,7 +53,7 @@ namespace Client
 
         private static void Main(string[] args)
         {
-            Interactions.CheckArgumentsCount(args, 3);
+            Interactions.CheckArgumentCount(args, 3);
             StartClient(args[0], int.Parse(args[1]), args[2]);
         }
     }
