@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Chain": {
-      "commandName": "Project",
-      "commandLineArgs": "7001 7004"
-    }
-  }
-}
