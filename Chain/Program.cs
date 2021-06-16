@@ -42,19 +42,13 @@ namespace Chain
         private static int ReadIntFromSocket(Socket handler)
         {
             byte[] buf = new byte[1024];
-            string data = null;
-            do
-            {
-                int bytes = handler.Receive(buf);
-                data += Encoding.UTF8.GetString(buf, 0, bytes);
-            }
-            while (handler.Available > 0);
-            return Convert.ToInt32(data);
+            int bytes = handler.Receive(buf);
+            return BitConverter.ToInt32(buf);
         }
 
         private static void SendIntToSocket(Socket handler, int number)
         {
-            sender.Send(Encoding.UTF8.GetBytes("" + number));
+            sender.Send(BitConverter.GetBytes(number));
         }
 
         private static void WorkAsInitiator()
